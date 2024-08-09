@@ -1,0 +1,23 @@
+# replace new-app with the name of your service
+services:
+  new-app:
+    build:
+      context: ./new-app
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./new-app:/app
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --log-level debug
+    env_file:
+      - ./new-app/.env
+    depends_on:
+      - postgres
+  postgres:
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
